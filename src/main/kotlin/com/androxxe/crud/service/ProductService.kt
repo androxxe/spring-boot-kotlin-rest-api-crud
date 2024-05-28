@@ -2,6 +2,7 @@ package com.androxxe.crud.service
 
 import com.androxxe.crud.entity.Product
 import com.androxxe.crud.model.CreateProductRequest
+import com.androxxe.crud.model.ListProductRequest
 import com.androxxe.crud.model.ProductResponse
 import com.androxxe.crud.model.UpdateProductRequest
 
@@ -13,4 +14,6 @@ interface ProductService {
     fun update(id: String, data: UpdateProductRequest): ProductResponse
 
     fun delete(id: String)
+
+    fun list(request: ListProductRequest): List<ProductResponse>
 }

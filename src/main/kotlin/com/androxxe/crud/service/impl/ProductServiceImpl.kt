@@ -2,15 +2,15 @@ package com.androxxe.crud.service.impl
 
 import com.androxxe.crud.entity.Product
 import com.androxxe.crud.exception.NotFoundException
-import com.androxxe.crud.model.CreateProductRequest
-import com.androxxe.crud.model.ProductResponse
-import com.androxxe.crud.model.UpdateProductRequest
+import com.androxxe.crud.model.*
 import com.androxxe.crud.repository.ProductRepository
 import com.androxxe.crud.service.ProductService
 import com.androxxe.crud.validation.ValidationUtil
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.Date
+import java.util.stream.Collectors
 
 @Service
 class ProductServiceImpl(
@@ -91,5 +91,21 @@ class ProductServiceImpl(
         }
 
         productRepository.delete(product)
+    }
+
+    override fun list(request: ListProductRequest): List<ProductResponse> {
+        val page = productRepository.findAll(PageRequest.of(request.page, request.size))
+
+        val products = page.get().collect(Collectors.toList())
+
+        return products.map { ProductResponse(
+            id = it.id,
+            name = it.name,
+            price = it.price,
+            quantity = it.quantity,
+            createdAt = it.createdAt,
+            updatedAt = it.updatedAt
+        )}
+
     }
 }
