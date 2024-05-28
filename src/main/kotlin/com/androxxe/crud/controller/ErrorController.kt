@@ -1,6 +1,7 @@
 package com.androxxe.crud.controller
 
 import com.androxxe.crud.exception.NotFoundException
+import com.androxxe.crud.exception.UnauthorizedException
 import com.androxxe.crud.model.WebResponse
 import jakarta.validation.ConstraintViolationException
 import jakarta.validation.constraints.Null
@@ -36,5 +37,14 @@ class ErrorController
         )
     }
 
+    @ExceptionHandler(value = [UnauthorizedException::class])
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun unauthorizedException(exception: UnauthorizedException): WebResponse<Null> {
+        return WebResponse(
+            code = 401,
+            status = "Unauthorized",
+            data = null
+        )
+    }
 
 }
